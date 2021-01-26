@@ -16,7 +16,7 @@ set undodir=~/.vim/undodir
 set undofile
 set incsearch
 set linebreak
-
+set title " change the terminal's title
 
 "
 " Give more space for displaying messages.
@@ -36,13 +36,12 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
-Plug 'lyuts/vim-rtags'
+Plug 'airblade/vim-gitgutter'
 Plug 'mbbill/undotree'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
-Plug 'stephpy/vim-yaml'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -54,9 +53,11 @@ Plug 'shime/vim-livedown'
 Plug 'vim-airline/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ycm-core/YouCompleteMe'
-
+Plug 'Raimondi/delimitMate'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'preservim/nerdtree'
+Plug 'hashivim/vim-terraform'
 call plug#end()
-
 
 colorscheme gruvbox
 set background=dark
@@ -93,9 +94,9 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
 
-
 " git fugitive
-nnoremap <leader>gc :GBranches<CR>
+nnoremap <leader>gb :GBranches<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
 
 " markdown live preview
 nnoremap <leader>lp :LivedownToggle<CR>
@@ -109,3 +110,21 @@ noremap <leader>j <C-w>j
 noremap <leader>k <C-w>k
 noremap <leader>l <C-w>l
 noremap <leader>w <C-w>w
+
+" terraform syntax highlighting to .hcl(for terragrunt only) files
+autocmd BufRead,BufNewFile *.hcl set filetype=terraform
+" terraform fmt on save
+let g:terraform_fmt_on_save=1
+
+" Added the following into the vim-terraform plugin on ftpplugin directory
+" to support formatting into hcl files with terraform fmt
+"
+"if get(g:, 'terraform_fmt_on_save', 0)
+"  augroup vim.terraform.fmt
+"    autocmd!
+"   autocmd BufWritePre *.tf call terraform#fmt()
+"    autocmd BufWritePre *.hcl call terraform#fmt()
+"    autocmd BufWritePre *.tfvars call terraform#fmt()
+"  augroup END
+"endif
+
