@@ -90,9 +90,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'short_path'
 
 " nerdtree settings
-"enable on vim start is commented out
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " nerdtree use leader + r to refresh directories instead of r inside nerdtree
 nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
 nnoremap <Leader>n :NERDTreeToggle<CR>
