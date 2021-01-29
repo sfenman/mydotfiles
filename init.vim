@@ -2,6 +2,7 @@ syntax on
 
 set relativenumber
 set hidden
+set guicursor=
 set noerrorbells
 set tabstop=2 softtabstop=2
 set shiftwidth=2
@@ -52,11 +53,12 @@ Plug 'stsewd/fzf-checkout.vim'
 Plug 'shime/vim-livedown'
 Plug 'vim-airline/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'ycm-core/YouCompleteMe'
 Plug 'Raimondi/delimitMate'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
 colorscheme gruvbox
@@ -82,10 +84,15 @@ runtime! macros/matchit.vim
 nnoremap j gj
 nnoremap k gk
 
+" vim airline settings
+let g:airline#extensions#tabline#enabled = 1
+" show dir/filename in tabs
+let g:airline#extensions#tabline#formatter = 'short_path'
 
 " nerdtree settings
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+"enable on vim start is commented out
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " nerdtree use leader + r to refresh directories instead of r inside nerdtree
 nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
 nnoremap <Leader>n :NERDTreeToggle<CR>
@@ -93,6 +100,12 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " fzf settings
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
+nnoremap <silent> <C-f> :Files<CR>
+
+let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
 
 " git fugitive
 nnoremap <leader>gb :GBranches<CR>
@@ -127,4 +140,3 @@ let g:terraform_fmt_on_save=1
 "    autocmd BufWritePre *.tfvars call terraform#fmt()
 "  augroup END
 "endif
-
