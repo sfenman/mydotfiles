@@ -103,8 +103,22 @@ nnoremap <silent> <C-f> :Files<CR>
 
 let g:fzf_action = {
     \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
+    \ 'ctrl-h': 'split',
     \ 'ctrl-v': 'vsplit' }
+
+" search history
+nmap <silent> <leader>h :History<cr>
+imap <silent> <leader>h <esc>:<C-u>History<CR>
+
+" search across files in the current directory
+nnoremap <C-p> :Files<cr>
+
+" search across git files
+nnoremap <silent> <leader>gf :GFiles<cr>
+
+" search open buffers
+nnoremap <silent> <leader>b :Buffers<cr>
+
 
 " git fugitive
 nnoremap <leader>gb :GBranches<CR>
