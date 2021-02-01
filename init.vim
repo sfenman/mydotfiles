@@ -2,7 +2,6 @@ syntax on
 
 set relativenumber
 set hidden
-set guicursor=
 set noerrorbells
 set tabstop=2 softtabstop=2
 set shiftwidth=2
@@ -33,7 +32,7 @@ set shortmess+=c
 set colorcolumn=120
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
@@ -84,6 +83,9 @@ runtime! macros/matchit.vim
 nnoremap j gj
 nnoremap k gk
 
+"vim go settings
+autocmd BufWritePre *.go :GoImports
+
 " vim airline settings
 let g:airline#extensions#tabline#enabled = 1
 " show dir/filename in tabs
@@ -108,7 +110,6 @@ let g:fzf_action = {
 
 " search history
 nmap <silent> <leader>h :History<cr>
-imap <silent> <leader>h <esc>:<C-u>History<CR>
 
 " search across files in the current directory
 nnoremap <C-p> :Files<cr>
@@ -153,3 +154,16 @@ let g:terraform_fmt_on_save=1
 "    autocmd BufWritePre *.tfvars call terraform#fmt()
 "  augroup END
 "endif
+
+
+"coc vim autocomplete with tab
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
