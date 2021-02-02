@@ -32,7 +32,7 @@ set shortmess+=c
 set colorcolumn=120
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
@@ -58,10 +58,21 @@ Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'colepeters/spacemacs-theme.vim'
+Plug 'sainnhe/gruvbox-material'
+
 call plug#end()
 
-colorscheme gruvbox
+" sorry gruvbox
+"colorscheme gruvbox
+"set background=dark
+if (has("termguicolors"))
+  set termguicolors
+endif
 set background=dark
+colorscheme spacemacs-theme
+
+let g:airline_theme = 'gruvbox_material'
 
 
 let mapleader = " "
@@ -167,3 +178,15 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
+
+
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
