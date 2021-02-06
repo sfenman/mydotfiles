@@ -49,7 +49,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
-Plug 'shime/vim-livedown'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -146,7 +146,8 @@ nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gd :Gdiffsplit<CR>
 
 " markdown live preview
-nnoremap <leader>lp :LivedownToggle<CR>
+nnoremap <leader>lp :MarkdownPreview<CR>
+nnoremap <leader>lps :MarkdownPreviewStop<CR>
 
 " undotree
 nnoremap <leader>ut :UndotreeToggle<CR>
