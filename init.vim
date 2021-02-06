@@ -59,10 +59,14 @@ Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'rakr/vim-one'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'dracula/vim'
 Plug 'colepeters/spacemacs-theme.vim'
 Plug 'sainnhe/gruvbox-material'
 
 call plug#end()
+
 
 " sorry gruvbox
 "colorscheme gruvbox
@@ -71,9 +75,9 @@ if (has("termguicolors"))
   set termguicolors
 endif
 set background=dark
-colorscheme spacemacs-theme
+colorscheme PaperColor
 
-let g:airline_theme = 'deus'
+let g:airline_theme = 'one'
 
 
 let mapleader = " "
@@ -90,6 +94,10 @@ set scrolloff=3
 set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
+
+" tab and shift+tab to move between buffers
+nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
 
 " Move up/down editor lines
 nnoremap j gj
