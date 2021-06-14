@@ -58,6 +58,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'qpkorr/vim-bufkill'
 
 Plug 'rakr/vim-one'
 Plug 'NLKNguyen/papercolor-theme'
@@ -75,7 +76,8 @@ if (has("termguicolors"))
   set termguicolors
 endif
 set background=dark
-colorscheme PaperColor
+let g:gruvbox_material_background = 'hard'
+colorscheme gruvbox-material
 
 let g:airline_theme = 'one'
 
@@ -89,6 +91,9 @@ let g:netrw_winsize = 25
 
 set runtimepath^=~/.vim/plugged/ctrlp.vim
 
+" Vertical Split
+nnoremap <leader>v :vsplit<CR>
+
 " Cursor motion
 set scrolloff=3
 set backspace=indent,eol,start
@@ -98,6 +103,9 @@ runtime! macros/matchit.vim
 " tab and shift+tab to move between buffers
 nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
 nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+
+" close current buffer without closing the window (bufkill plugin)
+nnoremap <leader>q :BD<cr>
 
 " Move up/down editor lines
 nnoremap j gj
