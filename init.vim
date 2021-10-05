@@ -44,8 +44,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'ConradIrwin/vim-bracketed-paste'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
@@ -55,10 +53,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'qpkorr/vim-bufkill'
+Plug 'godlygeek/tabular'
 
 Plug 'rakr/vim-one'
 Plug 'NLKNguyen/papercolor-theme'
@@ -88,6 +86,7 @@ let g:netrw_browse_split = 2
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
+nnoremap Y y$
 
 set runtimepath^=~/.vim/plugged/ctrlp.vim
 
@@ -111,8 +110,16 @@ nnoremap <leader>q :BD<cr>
 nnoremap j gj
 nnoremap k gk
 
-"vim go settings
+"vim-go settings
 autocmd BufWritePre *.go :GoImports
+let g:go_auto_type_info = 1 "autoshowing inputs and outputs for a function
+
+":A it replaces the current buffer with the alternate file. :AV will open a new vertical split with the alternate file.
+":AS will open the alternate file in a new split view and :AT in a new tab.
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 " vim airline settings
 let g:airline#extensions#tabline#enabled = 1
@@ -120,11 +127,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'short_path'
 
 " nerdtree settings
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " nerdtree use leader + r to refresh directories instead of r inside nerdtree
-nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
-nnoremap <Leader>n :NERDTreeToggle<CR>
+" nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
+" nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " fzf settings
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
