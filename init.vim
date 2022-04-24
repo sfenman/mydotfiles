@@ -41,23 +41,22 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'ConradIrwin/vim-bracketed-paste'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'preservim/nerdtree'
 Plug 'hashivim/vim-terraform'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'qpkorr/vim-bufkill'
 Plug 'Yggdroot/indentLine'
 Plug 'pedrohdz/vim-yaml-folds'
+Plug 'preservim/vimux'
 
+" coloreschemes
 Plug 'rakr/vim-one'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim'
@@ -84,7 +83,6 @@ let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
 
-set runtimepath^=~/.vim/plugged/ctrlp.vim
 
 " Vertical Split
 nnoremap <leader>v :vsplit<CR>
@@ -99,6 +97,7 @@ nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :wri
 
 " close current buffer without closing the window (bufkill plugin)
 nnoremap <leader>q :BD<cr>
+
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
@@ -109,12 +108,7 @@ autocmd BufWritePre *.go :GoImports
 let g:airline#extensions#tabline#enabled = 1
 " show dir/filename in tabs
 let g:airline#extensions#tabline#formatter = 'short_path'
-" nerdtree settings
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-" nerdtree use leader + r to refresh directories instead of r inside nerdtree
-nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
-nnoremap <Leader>n :NERDTreeToggle<CR>
+
 " fzf settings
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
@@ -127,18 +121,18 @@ let g:fzf_action = {
 
 " search history
 nmap <silent> <leader>h :History<cr>
-" search across files in the current directory
-nnoremap <C-p> :Files<cr>
 
 " search across git files
 nnoremap <silent> <leader>gf :GFiles<cr>
 " search open buffers
 nnoremap <silent> <leader>b :Buffers<cr>
-
+" ripgrep with fzf
+nnoremap <silent> <leader>rg :Rg<cr>
 
 " git fugitive
 nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gd :Gdiffsplit<CR>
+
 " markdown live preview
 nnoremap <leader>lp :MarkdownPreview<CR>
 nnoremap <leader>lps :MarkdownPreviewStop<CR>
@@ -191,7 +185,10 @@ vnoremap <leader>P "+P
 
 
 " clear highlighting
+nnoremap <nowait><silent> <ESC> :noh<CR>
 
 " disable yaml-folds plugin folding all blocks by default
 set foldlevelstart=20
-nnoremap <nowait><silent> <ESC> :noh<CR>
+
+" Prompt tmux pane to run command
+nnoremap <Leader>rc :VimuxPromptCommand<CR>
