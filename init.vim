@@ -12,11 +12,13 @@ set nu
 set smartcase
 set noswapfile
 set nobackup
-set undodir=~/.vim/undodir
+set undodir=$HOME/.vim/undodir
 set undofile
 set incsearch
 set linebreak
 set title " change the terminal's title
+set smartcase " search will be case sensitive if it contains an uppercase letter
+set ignorecase " smartcase also needs ignorecase
 "
 " Give more space for displaying messages.
 set cmdheight=2
@@ -55,8 +57,9 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'Yggdroot/indentLine'
 Plug 'pedrohdz/vim-yaml-folds'
 Plug 'preservim/vimux'
+Plug 'ThePrimeagen/vim-be-good'
 
-" coloreschemes
+" colorschemes
 Plug 'rakr/vim-one'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim'
@@ -81,7 +84,6 @@ let mapleader = " "
 let g:netrw_browse_split = 2
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
-
 
 
 " Vertical Split
@@ -162,6 +164,7 @@ let g:terraform_fmt_on_save=1
 "    autocmd BufWritePre *.tfvars call terraform#fmt()
 "  augroup END
 "endif
+
 "coc vim autocomplete with tab
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
@@ -190,5 +193,31 @@ nnoremap <nowait><silent> <ESC> :noh<CR>
 " disable yaml-folds plugin folding all blocks by default
 set foldlevelstart=20
 
-" Prompt tmux pane to run command
-nnoremap <Leader>rc :VimuxPromptCommand<CR>
+" doesnt work
+" helm templates using vim go
+" https://www.reddit.com/r/kubernetes/comments/ehpr5z/syntax_highlighting_for_helm_templates_in_vim/
+function HelmSyntax()
+  set filetype=yaml
+  unlet b:current_syntax
+  syn include @yamlGoTextTmpl syntax/gotexttmpl.vim
+  let b:current_syntax = "yaml"
+  syn region goTextTmpl start=/{{/ end=/}}/ contains=@gotplLiteral,gotplControl,gotplFunctions,gotplVariable,goTplIdentifier containedin=ALLBUT,goTextTmpl keepend
+  hi def link goTextTmpl PreProc
+endfunction
+augroup helm_syntax
+  autocmd!
+  autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl call HelmSyntax()
+augroup END
+
+" coc disable until i find a way to fix helm templates
+nnoremap <leader><F1> :CocDisable<CR>
+nnoremap <leader><F2> :CocEnable<CR>
+
+"local function tmux_neww(dir)
+"    os.execute("tmux neww " .. dir)
+"end
+"
+"local cwd = vim.fn.expand("%:p:h")
+"vim.keymap.set("n", "<F69>", function()
+"    tmux_neww(cwd)
+"end)
