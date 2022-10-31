@@ -17,10 +17,12 @@ return require('packer').startup(function(use)
   -- Markdown preview
   use {"ellisonleao/glow.nvim"}
 
-  -- Telescope
+  -- Syntax highlighting
+  -- Run TSInstall hcl
   use("nvim-treesitter/nvim-treesitter", {
       run = ":TSUpdate"
   })
+  -- Telescope
   use {
   'nvim-telescope/telescope.nvim', tag = '0.1.0',
   requires = { {'nvim-lua/plenary.nvim'} }
@@ -32,4 +34,28 @@ return require('packer').startup(function(use)
   'nvim-lualine/lualine.nvim',
   requires = { 'kyazdani42/nvim-web-devicons', opt = true }
 }
+
+  -- LSP
+  use 'neovim/nvim-lspconfig'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-nvim-lua'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-buffer'
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
+
+  -- Other stuff
+  use 'tpope/vim-surround'
+
+  use 'hashivim/vim-terraform'
+
+  -- Buffer showing on top
+  use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons'}
+
+  -- Git
+  use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+  use { 'rhysd/git-messenger.vim'}
+
 end)
