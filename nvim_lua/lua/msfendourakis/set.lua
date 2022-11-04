@@ -51,17 +51,27 @@ vim.keymap.set('n', '<leader>o', function () os.execute("tmux splitw -h -c" ..  
 -- lualine
 require('lualine').setup{
   options = {
-    theme = 'dracula'
+    theme = 'gruvbox'
   },
   sections = {
     lualine_a = {
       {
         'filename',
         file_status = true, -- displays file status (readonly status, modified status)
-        path = 2 -- 0 = just filename, 1 = relative path, 2 = absolute path
+        path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
       }
     }
   }
+}
+
+-- treesitter
+require'nvim-treesitter.configs'.setup {
+    sync_install = false,
+    ensure_installed = { "go" },
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
 }
 
 -- setup Native LSP
@@ -71,18 +81,22 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require'lspconfig'.gopls.setup{
   capabilities = capabilities,
   on_attach = function()
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer=0}) -- buffer=0 means use this only for the current buffer
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
-  vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer=0})
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
-  vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer=0})
-  vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer=0})
-  vim.keymap.set("n", "<leader>dg", "<cmd>Telescope diagnostics<cr>", {buffer=0}) -- opens telescope with all the errors of a project
-  vim.keymap.set("n", "<leader>rf", "<cmd>Telescope lsp_references<cr>", {buffer=0}) -- opens telescope with all the references of the object undor cursor
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {buffer=0}) -- rename variable under cursor
+--    vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer=0}) -- buffer=0 means use this only for the current buffer
+--  vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
+--  vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer=0})
+--  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
+--  vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer=0})
+--  vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer=0})
+    vim.keymap.set("n", "<leader>dg", "<cmd>Telescope diagnostics<cr>", {buffer=0}) -- opens telescope with all the errors of a project
+    vim.keymap.set("n", "<leader>rf", "<cmd>Telescope lsp_references<cr>", {buffer=0}) -- opens telescope with all the references of the object undor cursor
+--  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {buffer=0}) -- rename variable under cursor
   end,
- } -- connecto to the server
+} -- connecto to the server
+-- go format on save
+vim.cmd([[autocmd BufWritePre *.go lua vim.lsp.buf.formatting()]])
 
+
+-- Pyright setup
 require'lspconfig'.pyright.setup{
   capabilities = capabilities,
   on_attach = function()
@@ -96,6 +110,7 @@ require'lspconfig'.pyright.setup{
   end,
  } -- connecto to the server
 
+-- Terraform setup
 require'lspconfig'.terraformls.setup{
   filetypes = { "terraform", "hcl" }
 }
@@ -114,9 +129,9 @@ local cmp = require'cmp'
 --    priority
 --    max_item_count
 cmp.setup({
+  preselect = cmp.PreselectMode.None,
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
       require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
@@ -127,8 +142,6 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
-    ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
     ['<C-Y>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
@@ -143,14 +156,6 @@ cmp.setup({
   })
 })
 
--- Set configuration for specific filetype.
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-  }, {
-    { name = 'buffer' },
-  })
-})
 
 -- hcl format on save
 vim.cmd([[let g:terraform_fmt_on_save=1]])
@@ -198,6 +203,10 @@ vim.keymap.set('n', '<leader>v', '<Cmd>vsplit<CR>', opts)
 -- move between windows
 vim.keymap.set('n', '<leader>w', '<C-w>w', opts)
 
+-- Move up/down editor lines
+vim.keymap.set('n', 'j', 'gj', opts)
+vim.keymap.set('n', 'k', 'gk', opts)
+
 -- Neogit
 local neogit = require('neogit')
 neogit.setup {
@@ -205,3 +214,75 @@ neogit.setup {
     diffview = true -- requires the sindrets/diffview plugin
   },
 }
+
+
+------------- LSP SAGA -----------
+local keymap = vim.keymap.set
+local saga = require('lspsaga')
+
+saga.init_lsp_saga({
+  -- override default keys when using peek definition
+  definition_action_keys = {
+    edit = '<CR>',
+    vsplit = '<leader>v',
+    split = '<leader>s',
+    tabe = '<C-c>t',
+    quit = 'q',
+  },
+  finder_action_keys = {
+    open = {'o', '<CR>'},
+    vsplit = '<leader>v',
+    split = '<leader>s',
+    tabe = '<C-c>t',
+    quit = {'q', '<ESC>'},
+},
+})
+
+-- Lsp finder find the symbol definition implement reference
+-- if there is no implement it will hide
+-- when you use action in finder like open vsplit then you can
+-- use <C-t> to jump back
+keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+
+-- Code action
+keymap({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
+
+-- Rename
+keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true })
+
+-- Peek Definition
+-- you can edit the definition file in this flaotwindow
+-- also support open/vsplit/etc operation check definition_action_keys
+-- support tagstack C-t jump back
+keymap("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
+
+-- Show line diagnostics
+keymap("n", "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
+
+-- Show cursor diagnostic
+-- keymap("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
+
+-- Diagnsotic jump can use `<c-o>` to jump back
+keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
+keymap("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
+
+-- Only jump to error
+keymap("n", "[E", function()
+  require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { silent = true })
+keymap("n", "]E", function()
+  require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { silent = true })
+
+-- Outline
+keymap("n","<leader>to", "<cmd>LSoutlineToggle<CR>",{ silent = true })
+
+-- Hover Doc
+keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+
+-- Float terminal
+-- if you want pass somc cli command into terminal you can do like this
+-- open lazygit in lspsaga float terminal
+keymap("n", "<A-d>", "<cmd>Lspsaga open_floaterm lazygit<CR>", { silent = true })
+-- close floaterm
+keymap("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })

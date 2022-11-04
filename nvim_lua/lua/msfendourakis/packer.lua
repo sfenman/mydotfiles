@@ -9,6 +9,7 @@ return require('packer').startup(function(use)
 
   -- Themes
   use 'folke/tokyonight.nvim'
+  use {"ellisonleao/gruvbox.nvim"}
   use({
     'rose-pine/neovim',
     as = 'rose-pine'
@@ -44,6 +45,17 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-buffer'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+  use({
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+  })
+
+  -- Debugging
+  use 'mfussenegger/nvim-dap'
+  use 'leoluz/nvim-dap-go' -- requires delve. go install delve
+  use 'rcarriga/nvim-dap-ui'
+  use 'theHamsta/nvim-dap-virtual-text'
+  use 'nvim-telescope/telescope-dap.nvim'
 
   -- Other stuff
   use 'tpope/vim-surround'
