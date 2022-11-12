@@ -13,7 +13,7 @@ set.softtabstop = 0
 set.expandtab = true
 set.relativenumber = true
 set.hidden = true
-set.tabstop=2 
+set.tabstop=2
 set.softtabstop=2
 set.shiftwidth=2
 set.expandtab = true
@@ -24,7 +24,7 @@ set.smartcase = true
 set.swapfile = false
 set.undodir="/home/msfendourakis/.vim/undodir" -- TODO dynamically set $HOME
 set.undofile = true
-set.hlsearch = false
+set.hlsearch = true
 set.incsearch = true
 set.linebreak = true
 set.title = true -- change the terminal's title
@@ -51,7 +51,7 @@ vim.keymap.set('n', '<leader>o', function () os.execute("tmux splitw -h -c" ..  
 -- lualine
 require('lualine').setup{
   options = {
-    theme = 'gruvbox'
+    theme = 'tokyonight'
   },
   sections = {
     lualine_a = {
@@ -63,6 +63,9 @@ require('lualine').setup{
     }
   }
 }
+
+-- comment nvim
+require('Comment').setup()
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
@@ -286,3 +289,18 @@ keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 keymap("n", "<A-d>", "<cmd>Lspsaga open_floaterm lazygit<CR>", { silent = true })
 -- close floaterm
 keymap("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
+
+-- Indentation
+-- Deletes EOL blank lines
+vim.api.nvim_create_autocmd('BufWritePre', {command = '%s/\\s\\+$//e'})
+-- Shows · on EOL
+vim.opt.list = true
+vim.opt.listchars:append "eol:·"
+
+require("indent_blankline").setup {
+    show_end_of_line = true,
+}
+
+
+-- clear highlighting
+vim.keymap.set('n', '<ESC>', '<Cmd>noh<CR>', opts)

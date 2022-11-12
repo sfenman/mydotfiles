@@ -70,4 +70,12 @@ return require('packer').startup(function(use)
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'rhysd/git-messenger.vim'}
 
+  -- Indentation
+  use { 'lukas-reineke/indent-blankline.nvim' }
+
+  -- Comment
+  use {
+    'numToStr/Comment.nvim',
+}
+
 end)
