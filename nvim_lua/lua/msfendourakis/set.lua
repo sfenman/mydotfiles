@@ -1,5 +1,9 @@
 local set = vim.opt
 vim.g.mapleader = " "
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local opts = { noremap = true, silent = true }
 
 -- Move to previous/next
@@ -38,6 +42,21 @@ set.updatetime=50
 -- Don't pass messages to |ins-completion-menu|.
 set.colorcolumn="120"
 -- highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+vim.keymap.set('n', '<leader>nt', '<cmd>NvimTreeToggle<CR>', { noremap = true })
+
+
+local telescope = require('telescope')
+
+telescope.setup {
+  pickers = {
+    find_files = {
+      hidden = true
+    }
+  }
+}
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-f>', builtin.find_files, { noremap = true })
@@ -170,7 +189,8 @@ vim.cmd([[autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform]])
 vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json]])
 
 -- TODO: Do it with lua in config instead inside the plugin
---" Added the following into the vim-terraform plugin on ftpplugin directory
+--" Added the following into the vim-terraform plugin on ftpplugin/hcl.vim file
+--  For packer is ~/.local/share/nvim/site/pack/packer/start/
 --" to support formatting into hcl files with terraform fmt
 --"
 --"if get(g:, 'terraform_fmt_on_save', 0)
@@ -221,24 +241,22 @@ neogit.setup {
 
 ------------- LSP SAGA -----------
 local keymap = vim.keymap.set
-local saga = require('lspsaga')
 
-saga.init_lsp_saga({
-  -- override default keys when using peek definition
-  definition_action_keys = {
-    edit = '<CR>',
-    vsplit = '<leader>v',
-    split = '<leader>s',
-    tabe = '<C-c>t',
-    quit = 'q',
+local saga = require('lspsaga').setup({
+   definition = {
+     edit = '<CR>',
+     vsplit = '<leader>v',
+     split = '<leader>s',
+     tabe = '<C-c>t',
+     quit = 'q',
+   },
+   finder = {
+     open = {'o', '<CR>'},
+     vsplit = '<leader>v',
+     split = '<leader>s',
+     tabe = '<C-c>t',
+     quit = {'q', '<ESC>'},
   },
-  finder_action_keys = {
-    open = {'o', '<CR>'},
-    vsplit = '<leader>v',
-    split = '<leader>s',
-    tabe = '<C-c>t',
-    quit = {'q', '<ESC>'},
-},
 })
 
 -- Lsp finder find the symbol definition implement reference
@@ -304,3 +322,25 @@ require("indent_blankline").setup {
 
 -- clear highlighting
 vim.keymap.set('n', '<ESC>', '<Cmd>noh<CR>', opts)
+
+-- -- helm - ls config
+-- local configs = require('lspconfig.configs')
+-- local lspconfig = require('lspconfig')
+-- local util = require('lspconfig.util')
+--
+-- if not configs.helm_ls then
+--   configs.helm_ls = {
+--     default_config = {
+--       cmd = {"helm_ls", "serve"},
+--       filetypes = {'helm'},
+--       root_dir = function(fname)
+--         return util.root_pattern('Chart.yaml')(fname)
+--       end,
+--     },
+--   }
+-- end
+--
+-- lspconfig.helm_ls.setup {
+--   filetypes = {"helm"},
+--   cmd = {"helm_ls", "serve"},
+-- }
