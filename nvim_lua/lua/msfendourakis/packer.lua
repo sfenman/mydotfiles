@@ -7,6 +7,9 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  -- Web dev icons
+  use {'kyazdani42/nvim-web-devicons'}
+
   -- Themes
   use 'folke/tokyonight.nvim'
   use {"ellisonleao/gruvbox.nvim"}
@@ -14,6 +17,7 @@ return require('packer').startup(function(use)
     'rose-pine/neovim',
     as = 'rose-pine'
   })
+  use 'rebelot/kanagawa.nvim'
 
   -- Markdown preview
   use {"ellisonleao/glow.nvim"}
@@ -95,5 +99,8 @@ return require('packer').startup(function(use)
   },
   tag = 'nightly' -- optional, updated every week. (see issue #1193)
 }
+
+ -- Transparent background
+ use { 'xiyaowong/nvim-transparent' }
 
 end)
