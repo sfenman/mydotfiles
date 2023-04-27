@@ -1,0 +1,7 @@
+[commit]
+	gpgsign = true
+[user]
+	email = myemail
+	name = Manolis Sfendourakis
+[init]
+	defaultBranch = main
