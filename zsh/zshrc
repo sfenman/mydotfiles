@@ -17,6 +17,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git docker aws docker-compose kubectl helm)
 source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+HISTORY_IGNORE="(ls|cd|pwd|exit|cd|clear|kgp)"
 
 # add aliases
 if [ -f ~/.aliases ]; then
@@ -30,6 +31,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 export PATH=$PATH:$HOME/bin
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 . /usr/share/autojump/autojump.sh
 export PATH=$PATH:/usr/local/go/bin
 #source <(kubectl-argo-rollouts completion zsh)
