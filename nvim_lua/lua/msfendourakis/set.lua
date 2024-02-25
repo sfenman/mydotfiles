@@ -65,7 +65,6 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { noremap = true })
 
 -- open a new tmux window in split mode in the same dir with the buffer
 vim.keymap.set('n', '<leader>o', function () os.execute("tmux splitw -h -c" ..  vim.fn.expand '%:p:h' .. '/') end, { expr = true })
-vim.keymap.set('n', '<leader>i', function () os.execute("tmux splitw -c" ..  vim.fn.expand '%:p:h' .. '/') end, { expr = true })
 
 
 -- lualine
@@ -231,15 +230,6 @@ vim.keymap.set('n', '<leader>w', '<C-w>w', opts)
 vim.keymap.set('n', 'j', 'gj', opts)
 vim.keymap.set('n', 'k', 'gk', opts)
 
--- Neogit
-local neogit = require('neogit')
-neogit.setup {
-  integrations = {
-    diffview = true -- requires the sindrets/diffview plugin
-  },
-}
-
-
 ------------- LSP SAGA -----------
 local keymap = vim.keymap.set
 
@@ -310,29 +300,18 @@ keymap("n", "<A-d>", "<cmd>Lspsaga term_toggle lazygit<CR>", { silent = true })
 keymap("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga term_toggle<CR>]], { silent = true })
 
 -- Indentation
+
+-- Indentation
 -- Deletes EOL blank lines
 vim.api.nvim_create_autocmd('BufWritePre', {command = '%s/\\s\\+$//e'})
 -- Shows · on EOL
 vim.opt.list = true
 vim.opt.listchars:append "eol:·"
 
-require("indent_blankline").setup {
-    show_end_of_line = true,
-}
-
+require("ibl").setup()
 
 -- clear highlighting
 vim.keymap.set('n', '<ESC>', '<Cmd>noh<CR>', opts)
-
-
--- transparent background
-require("transparent").setup({
-  enable = true, -- boolean: enable transparent
-  extra_groups = { -- table/string: additional groups that should be cleared
-    -- In particular, when you set it to 'all', that means all available groups
-  },
-  exclude = {}, -- table: groups you don't want to clear
-})
 
 -- -- helm - ls config
 -- local configs = require('lspconfig.configs')

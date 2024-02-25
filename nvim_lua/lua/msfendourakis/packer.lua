@@ -7,7 +7,7 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-  -- Web dev icons
+  -- web icons
   use {'kyazdani42/nvim-web-devicons'}
 
   -- Themes
@@ -17,7 +17,8 @@ return require('packer').startup(function(use)
     'rose-pine/neovim',
     as = 'rose-pine'
   })
-  use 'rebelot/kanagawa.nvim'
+  use "rebelot/kanagawa.nvim"
+  use "catppuccin/nvim"
 
   -- Markdown preview
   use {"ellisonleao/glow.nvim"}
@@ -36,7 +37,7 @@ return require('packer').startup(function(use)
   })
   -- Telescope
   use {
-  'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  'nvim-telescope/telescope.nvim', tag = '0.1.4',
   requires = { {'nvim-lua/plenary.nvim'} }
 }
 
@@ -77,7 +78,6 @@ return require('packer').startup(function(use)
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons'}
 
   -- Git
-  use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'rhysd/git-messenger.vim'}
 
@@ -91,6 +91,9 @@ return require('packer').startup(function(use)
 
   use { 'towolf/vim-helm' }
 
+  -- Terramate
+  use 'terramate-io/vim-terramate'
+
   -- Nvim tree
   use {
   'nvim-tree/nvim-tree.lua',
@@ -100,7 +103,10 @@ return require('packer').startup(function(use)
   tag = 'nightly' -- optional, updated every week. (see issue #1193)
 }
 
- -- Transparent background
- use { 'xiyaowong/nvim-transparent' }
+-- Undotree
+  use 'mbbill/undotree'
+
+  -- Use keys to navigate between vim and tmux
+  use { 'christoomey/vim-tmux-navigator' }
 
 end)
