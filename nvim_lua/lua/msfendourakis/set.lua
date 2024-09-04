@@ -26,7 +26,7 @@ set.nu = true
 set.wrap = true
 set.smartcase = true
 set.swapfile = false
-set.undodir="/home/msfendourakis/.vim/undodir" -- TODO dynamically set $HOME
+set.undodir="/Users/msfendourakis/.vim/undodir" -- TODO dynamically set $HOME
 set.undofile = true
 set.hlsearch = true
 set.incsearch = true
@@ -115,8 +115,7 @@ require'lspconfig'.gopls.setup{
   end,
 } -- connecto to the server
 -- go format on save
-vim.cmd([[autocmd BufWritePre *.go lua vim.lsp.buf.formatting()]])
-
+vim.cmd([[autocmd BufWritePre *.go lua vim.lsp.buf.format()]])
 
 -- Pyright setup
 require'lspconfig'.pyright.setup{
@@ -295,9 +294,9 @@ keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 -- Float terminal
 -- if you want pass somc cli command into terminal you can do like this
 -- open lazygit in lspsaga float terminal
-keymap("n", "<A-d>", "<cmd>Lspsaga term_toggle lazygit<CR>", { silent = true })
+keymap("n", "<leader>l", "<cmd>Lspsaga term_toggle lazygit<CR>", { silent = true })
 -- close floaterm
-keymap("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga term_toggle<CR>]], { silent = true })
+keymap("t", "<leader>l", [[<C-\><C-n><cmd>Lspsaga term_toggle<CR>]], { silent = true })
 
 -- Indentation
 
@@ -312,6 +311,11 @@ require("ibl").setup()
 
 -- clear highlighting
 vim.keymap.set('n', '<ESC>', '<Cmd>noh<CR>', opts)
+
+-- duck nvim
+vim.keymap.set('n', '<leader>dd', function() require("duck").hatch() end, {})
+vim.keymap.set('n', '<leader>dk', function() require("duck").cook() end, {})
+vim.keymap.set('n', '<leader>da', function() require("duck").cook_all() end, {})
 
 -- -- helm - ls config
 -- local configs = require('lspconfig.configs')
