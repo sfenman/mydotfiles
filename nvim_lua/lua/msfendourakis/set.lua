@@ -26,7 +26,7 @@ set.nu = true
 set.wrap = true
 set.smartcase = true
 set.swapfile = false
-set.undodir="/Users/msfendourakis/.vim/undodir" -- TODO dynamically set $HOME
+set.undodir="/Users/emmanouil/.vim/undodir" -- TODO dynamically set $HOME
 set.undofile = true
 set.hlsearch = true
 set.incsearch = true
@@ -65,6 +65,7 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { noremap = true })
 
 -- open a new tmux window in split mode in the same dir with the buffer
 vim.keymap.set('n', '<leader>o', function () os.execute("tmux splitw -h -c" ..  vim.fn.expand '%:p:h' .. '/') end, { expr = true })
+vim.keymap.set('n', '<leader>i', function () os.execute("tmux splitw -v -l '20%' -c" ..  vim.fn.expand '%:p:h' .. '/') end, { expr = true })
 
 
 -- lualine
@@ -247,6 +248,9 @@ local saga = require('lspsaga').setup({
      tabe = '<C-c>t',
      quit = {'q', '<ESC>'},
   },
+    lightbulb = {
+    virtual_text = false, -- disables just the lightbulb at the end of the line
+  },
 })
 
 -- Lsp finder find the symbol definition implement reference
@@ -338,3 +342,20 @@ vim.keymap.set('n', '<leader>da', function() require("duck").cook_all() end, {})
 --   filetypes = {"helm"},
 --   cmd = {"helm_ls", "serve"},
 -- }
+--
+--
+---- Function to copy relative lines above using the t. command Eg: :-3,-1t.
+--- TODO: add an option to copy lines from below as well
+function CopyRelativeLines()
+  local num1 = tonumber(vim.fn.nr2char(vim.fn.getchar()))
+  local num2 = tonumber(vim.fn.nr2char(vim.fn.getchar()))
+
+  if num1 and num2 then
+    local range = "-" .. num1 .. ",-" .. num2 .. "t."
+    vim.cmd(range)
+  else
+    print("Invalid input! Please enter valid numbers.")
+  end
+end
+
+vim.api.nvim_set_keymap('n', '<leader>t', ':lua CopyRelativeLines()<CR>', { noremap = true, silent = true })
