@@ -204,7 +204,6 @@ vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=jso
 
 -- Buffer showing on top
 vim.opt.termguicolors = true
-require("bufferline").setup{}
 
 vim.keymap.set('n', '<A-,>', '<Cmd>bprev<CR>', opts)
 vim.keymap.set('n', '<A-.>', '<Cmd>bnext<CR>', opts)
@@ -235,7 +234,7 @@ local keymap = vim.keymap.set
 
 local saga = require('lspsaga').setup({
    definition = {
-     edit = '<CR>',
+     edit = '<CR>', -- open is Ctrl+o (it is maybe the default value have to check docs)
      vsplit = '<leader>v',
      split = '<leader>s',
      tabe = '<C-c>t',
@@ -249,7 +248,9 @@ local saga = require('lspsaga').setup({
      quit = {'q', '<ESC>'},
   },
     lightbulb = {
-    virtual_text = false, -- disables just the lightbulb at the end of the line
+      enable = false,
+      virtual_text = false, -- disables just the lightbulb at the end of the line
+      debounce = 200
   },
 })
 
@@ -257,7 +258,7 @@ local saga = require('lspsaga').setup({
 -- if there is no implement it will hide
 -- when you use action in finder like open vsplit then you can
 -- use <C-t> to jump back
-keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+keymap("n", "gh", "<cmd>Lspsaga finder<CR>", { silent = true })
 
 -- Code action
 keymap({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
@@ -349,6 +350,18 @@ vim.keymap.set('n', '<leader>da', function() require("duck").cook_all() end, {})
 function CopyRelativeLines()
   local num1 = tonumber(vim.fn.nr2char(vim.fn.getchar()))
   local num2 = tonumber(vim.fn.nr2char(vim.fn.getchar()))
+
+  local function read_number()
+    local num_str = char1
+    while true do
+      local next_char = vim.fn.nr2char(vim.fn.getchar())
+      if not next_char:match("%d") then
+        break
+      end
+      num_str = num_str .. next_char
+    end
+    return tonumber(num_str)
+  end
 
   if num1 and num2 then
     local range = "-" .. num1 .. ",-" .. num2 .. "t."

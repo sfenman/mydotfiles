@@ -28,7 +28,7 @@ return require('packer').startup(function(use)
     run = function() vim.fn["mkdp#util#install"]() end,
   })
 
-  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+  -- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
   -- Syntax highlighting
   -- Run TSInstall hcl
@@ -73,9 +73,6 @@ return require('packer').startup(function(use)
   use 'tpope/vim-surround'
 
   use 'hashivim/vim-terraform'
-
-  -- Buffer showing on top
-  use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons'}
 
   -- Git
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
